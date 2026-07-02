@@ -1,133 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Invitados - Boda</title>
-    <!-- Lucide Icons & Fuentes -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cliente oficial de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
+  <script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260702-05-84893f2"}');</script>
+  <script src="/_sdk/f432b76fb310b513.telemetry_sdk.js" integrity="sha512-9FJQ55EKmmqhyyik8BhrMVfm0+iYYfb8uOlRsjtkxJMEI97qOVEI4PnHohDjQAtvAep0IOEpdQ64eki0sz62ug=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Invitados - Boda</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&amp;family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+  <style>
         body { font-family: 'Alegreya Sans', sans-serif; }
         h1, h2 { font-family: 'Alegreya', serif; }
-    </style>
+  </style>
+  <script src="/_sdk/0b3af1c300e720aa.resizing_sdk.js" type="text/javascript" integrity="sha512-nX1P6oXZmEY5wCI2lUVg3BwKu1cr0yi+ZpXgZ0Yn90vkSwvpmyzBMvOyD6VLJUtBwFI2dSrw1b6OvORxSggw3w=="></script>
 </head>
-<body class="bg-gray-50 text-gray-800 p-6">
-
-<div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-8">
-    <h1 class="text-4xl font-bold text-center text-gray-900 mb-2">Lista de Invitados</h1>
-    <p class="text-center text-gray-500 mb-8 italic">Organiza a tus invitados de boda</p>
-
-    <!-- Formulario para agregar -->
+<body data-template-id="__page-root" class="bg-gray-50 text-gray-800 p-6" style="background: linear-gradient(0deg, rgb(183, 116, 128), rgb(254, 170, 160), rgb(183, 116, 128), rgb(247, 232, 201), rgb(183, 116, 128));">
+  <div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-8">
+   <header class="text-center mb-8">
+    <h1 data-template-id="page-title" class="canva-text text-4xl font-bold text-center mb-2" style="color: rgb(6, 78, 59); font-weight: 700; font-style: normal; font-size: 28px;">Lista de Invitados</h1>
+    <p data-template-id="page-subtitle" class="canva-text text-center text-gray-500 italic" style="color: rgb(107, 114, 128); font-weight: 400; font-style: normal; font-size: 14px;">Organizador de Boda Hillary &amp; Jefrid </p>
+   </header>
+   <main>
     <form id="add-form" class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200 items-end">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-            <input type="text" id="input-name" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-            <input type="text" id="input-phone" placeholder="Ej: 3051234567" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Mesa</label>
-            <input type="text" id="input-table" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Categoría / Relación</label>
-            <input type="text" id="input-group" placeholder="Ej: Amigos, Trabajo" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">ID Familia / Pareja</label>
-            <input type="text" id="input-family" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-        </div>
-        <div class="flex items-center h-10 gap-2 pl-2">
-            <input type="checkbox" id="input-sent" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
-            <label for="input-sent" class="text-sm font-medium text-gray-700 select-none">¿Enviada?</label>
-        </div>
-        <div>
-            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
-                <i data-lucide="plus" style="width:18px; height:18px"></i> Agregar
-            </button>
-        </div>
-    </form>
-
-    <!-- Barra de Búsqueda y Filtros Rápidos -->
-    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
-        <div class="relative flex-1 max-w-md">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                <i data-lucide="search" style="width:18px;height:18px"></i>
-            </span>
-            <input type="text" id="search-bar" placeholder="Buscar por nombre, teléfono o familia..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white text-sm">
-        </div>
-        <div class="flex flex-wrap gap-2 items-center text-xs">
-            <span class="font-semibold text-gray-600 mr-1">Filtrar por:</span>
-            <button data-filter="all" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white font-medium shadow-sm transition-all">Todos</button>
-            <button data-filter="not-sent" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Enviar</button>
-            <button data-filter="pending" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Pendientes RSVP</button>
-            <button data-filter="confirmed" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Confirmados</button>
-            <button data-filter="no-table" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Mesa</button>
-        </div>
+     <div><label for="input-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label><input id="input-name" type="text" required="" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+     </div>
+     <div><label for="input-phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label><input id="input-phone" type="text" placeholder="Ej: 3051234567" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+     </div>
+     <div><label for="input-table" class="block text-sm font-medium text-gray-700 mb-1">Mesa</label><input id="input-table" type="text" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+     </div>
+     <div><label for="input-group" class="block text-sm font-medium text-gray-700 mb-1">Categoría / Relación</label><input id="input-group" type="text" placeholder="Ej: Amigos, Trabajo" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+     </div>
+     <div><label for="input-family" class="block text-sm font-medium text-gray-700 mb-1">ID Familia / Pareja</label><input id="input-family" type="text" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+     </div>
+     <div class="flex items-center h-10 gap-2 pl-2"><input id="input-sent" type="checkbox" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"><label for="input-sent" class="text-sm font-medium text-gray-700 select-none">¿Enviada?</label>
+     </div>
+     <div><button data-template-id="add-button" type="submit" class="canva-button w-full font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2" style="background: rgb(5, 150, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 14px;">Agregar</button>
+     </div>
+    </form><div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+     <div class="relative flex-1 max-w-md">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400"><i data-lucide="search" style="width:18px;height:18px"></i></span> <input id="search-bar" type="text" placeholder="Buscar por nombre, teléfono o familia..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white text-sm">
+     </div>
+     <div class="flex flex-wrap gap-2 items-center text-xs">
+      <span class="font-semibold text-gray-600 mr-1">Filtrar por:</span> <button data-filter="all" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white font-medium shadow-sm transition-all">Todos</button> <button data-filter="not-sent" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Enviar</button> <button data-filter="pending" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Pendientes RSVP</button> <button data-filter="confirmed" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Confirmados</button> <button data-filter="no-table" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Mesa</button>
+     </div>
+    </div><div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 text-center text-sm font-medium">
+     <div id="stat-total" class="bg-gray-100 p-3 rounded-lg text-gray-700 border border-gray-200">Total: 0</div>
+     <div id="stat-sent" class="bg-blue-50 p-3 rounded-lg text-blue-700 border border-blue-200">Enviadas: 0</div>
+     <div id="stat-confirmed" class="bg-emerald-50 p-3 rounded-lg text-emerald-700 border border-emerald-200">Confirmados: 0</div>
+     <div id="stat-declined" class="bg-red-50 p-3 rounded-lg text-red-700 border border-red-200">No asisten: 0</div>
+     <div id="stat-pending" class="bg-amber-50 p-3 rounded-lg text-amber-700 border border-amber-200">Pendientes: 0</div>
+    </div><div class="overflow-x-auto border border-gray-200 rounded-lg">
+     <table class="w-full text-left border-collapse">
+      <thead>
+       <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 font-semibold text-sm">
+        <th class="px-4 py-3 border-r border-gray-200">Nombre</th>
+        <th class="px-4 py-3 border-r border-gray-200 w-48">Teléfono</th>
+        <th class="px-4 py-3 border-r border-gray-200 w-28">Mesa</th>
+        <th class="px-4 py-3 border-r border-gray-200 w-40">Categoría</th>
+        <th class="px-4 py-3 border-r border-gray-200 w-44">Familia / Pareja</th>
+        <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Enviada</th>
+        <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Asiste</th>
+        <th class="px-4 py-3 text-center border-r border-gray-200 w-24">No Asiste</th>
+        <th class="px-4 py-3 w-16 text-center">Eliminar</th>
+       </tr>
+      </thead>
+      <tbody id="guest-list" class="text-sm divide-y divide-gray-200"></tbody>
+     </table>
     </div>
+    <div id="empty-msg" data-template-id="empty-message" class="canva-text text-center py-12 text-gray-400 italic" style="color: rgb(156, 163, 175); font-weight: 400; font-style: italic; font-size: 14px;">Aún no hay invitados. ¡Agrega el primero!</div>
+    <div id="filter-empty-msg" data-template-id="filter-empty-message" class="canva-text hidden text-center py-12 text-gray-400 italic" style="color: rgb(156, 163, 175); font-weight: 400; font-style: italic; font-size: 14px;">No se encontraron invitados con los filtros actuales.</div>
+    <div id="limit-warning" data-template-id="limit-warning" class="canva-text hidden mt-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded text-center text-sm font-medium" style="color: rgb(220, 38, 38); font-weight: 700; font-style: normal; font-size: 14px;">Has alcanzado el límite de 999 invitados.</div>
+   </main>
+  </div><div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+   <h2 data-template-id="tables-title" class="canva-text text-2xl font-bold mb-2 flex items-center gap-2" style="color: rgb(6, 78, 59); font-weight: 700; font-style: normal; font-size: 21px;">Distribución de Mesas</h2>
+   <p data-template-id="tables-subtitle" class="canva-text text-sm text-gray-500 mb-6" style="color: rgb(107, 114, 128); font-weight: 400; font-style: normal; font-size: 14px;">Visualiza cómo van quedando conformados los espacios de tu recepción.</p>
+   <div id="tables-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  </div>
+  <script src="/_sdk/6740099151a06780.editing_sdk.js" integrity="sha512-eSc5OWFJjK6fUpxViOKXm5ekJ3Gp5icgygsjPVz9Xzudb9TkX/uNdpqNHc63uN0PdxYE9+g8pZAHIib0FgE0Cw=="></script>
+  <script src="/_sdk/0179d719c431a79e.data_sdk.js" integrity="sha512-OsRvJkI5GkC3MJQcgotQYotpzrMSX415GiKKgvYdxQEEkzD/fdchShO2FMSy0PJr/tiINMXOk5Vl2zAgg6bUiA=="></script>
+  <script>
+let guests = [];
+let currentFilter = 'all';
+let searchQuery = '';
+const guestList = document.getElementById('guest-list');
+const emptyMsg = document.getElementById('empty-msg');
+const filterEmptyMsg = document.getElementById('filter-empty-msg');
+const limitWarning = document.getElementById('limit-warning');
+const form = document.getElementById('add-form');
+const searchBar = document.getElementById('search-bar');
+const tablesContainer = document.getElementById('tables-container');
 
-    <!-- Indicadores / Estadísticas -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 text-center text-sm font-medium">
-        <div id="stat-total" class="bg-gray-100 p-3 rounded-lg text-gray-700 border border-gray-200">Total: 0</div>
-        <div id="stat-sent" class="bg-blue-50 p-3 rounded-lg text-blue-700 border border-blue-200">Enviadas: 0</div>
-        <div id="stat-confirmed" class="bg-emerald-50 p-3 rounded-lg text-emerald-700 border border-emerald-200">Confirmados: 0</div>
-        <div id="stat-declined" class="bg-red-50 p-3 rounded-lg text-red-700 border border-red-200">No asisten: 0</div>
-        <div id="stat-pending" class="bg-amber-50 p-3 rounded-lg text-amber-700 border border-amber-200">Pendientes: 0</div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="overflow-x-auto border border-gray-200 rounded-lg">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 font-semibold text-sm">
-                    <th class="px-4 py-3 border-r border-gray-200">Nombre</th>
-                    <th class="px-4 py-3 border-r border-gray-200 w-48">Teléfono</th>
-                    <th class="px-4 py-3 border-r border-gray-200 w-28">Mesa</th>
-                    <th class="px-4 py-3 border-r border-gray-200 w-40">Categoría</th>
-                    <th class="px-4 py-3 border-r border-gray-200 w-44">Familia / Pareja</th>
-                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Enviada</th>
-                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Asiste</th>
-                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">No Asiste</th>
-                    <th class="px-4 py-3 w-16 text-center">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody id="guest-list" class="text-sm divide-y divide-gray-200">
-                <!-- Se rellena dinámicamente -->
-            </tbody>
-        </table>
-    </div>
-
-    <div id="empty-msg" class="text-center py-12 text-gray-400 italic">
-        Aún no hay invitados. ¡Agrega el primero!
-    </div>
-
-    <div id="filter-empty-msg" class="hidden text-center py-12 text-gray-400 italic">
-        No se encontraron invitados con los filtros actuales.
-    </div>
-</div>
-
-<!-- MAPA / RESUMEN DE MESAS -->
-<div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-    <h2 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-        <i data-lucide="armchair" class="text-emerald-600" style="width:24px;height:24px"></i> Distribución de Mesas
-    </h2>
-    <p class="text-sm text-gray-500 mb-6">Visualiza cómo van quedando conformados los espacios de tu recepción.</p>
-    
-    <div id="tables-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Se rellena dinámicamente -->
-    </div>
-</div>
-
-<script>
 // CONFIGURACIÓN DE TU BASE DE DATOS REAL (YA CONECTADA)
 const SUPABASE_URL = "https://zvactbtumzbjhnszlnto.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_yXjsxKn-LpTSanuJmHAkOA_zvqmxXiB";
@@ -191,27 +154,13 @@ window.dataSdk = {
     }
 };
 
-let guests = [];
-let currentFilter = 'all';
-let searchQuery = '';
-
-const guestList = document.getElementById('guest-list');
-const emptyMsg = document.getElementById('empty-msg');
-const filterEmptyMsg = document.getElementById('filter-empty-msg');
-const form = document.getElementById('add-form');
-const searchBar = document.getElementById('search-bar');
-const tablesContainer = document.getElementById('tables-container');
-
 function getFilteredGuests() {
     return guests.filter(g => {
-        const matchSearch = 
-            g.name.toLowerCase().includes(searchQuery) ||
+        const matchSearch = g.name.toLowerCase().includes(searchQuery) ||
             (g.phone && g.phone.includes(searchQuery)) ||
             (g.group_tag && g.group_tag.toLowerCase().includes(searchQuery)) ||
             (g.family_group && g.family_group.toLowerCase().includes(searchQuery));
-        
         if (!matchSearch) return false;
-
         switch (currentFilter) {
             case 'not-sent': return !g.invitation_sent;
             case 'pending': return g.attendance === 'pendiente';
@@ -226,11 +175,7 @@ function renderGuests() {
     const filtered = getFilteredGuests();
     const existing = new Map([...guestList.children].map(r => [r.dataset.id, r]));
     const ids = new Set(filtered.map(g => g.__backendId));
-    
-    existing.forEach((el, id) => {
-        if (!ids.has(id)) el.remove();
-    });
-
+    existing.forEach((el, id) => { if (!ids.has(id)) el.remove(); });
     filtered.forEach(g => {
         if (existing.has(g.__backendId)) {
             updateRow(existing.get(g.__backendId), g);
@@ -238,32 +183,31 @@ function renderGuests() {
             guestList.appendChild(createRow(g));
         }
     });
-
     emptyMsg.classList.toggle('hidden', guests.length > 0);
     if (guests.length > 0) {
         filterEmptyMsg.classList.toggle('hidden', filtered.length > 0);
     } else {
         filterEmptyMsg.classList.add('hidden');
     }
-
     updateStats();
     renderTablesSummary();
 }
 
 function createRow(g) {
     const tr = document.createElement('tr');
-    tr.className = 'border-b hover:bg-gray-50/50 transition-colors';
     tr.dataset.id = g.__backendId;
     updateRow(tr, g);
     return tr;
 }
 
 function updateRow(tr, g) {
+    tr.className = 'border-b hover:bg-gray-50/50 transition-colors';
+
     tr.innerHTML = `
         <td class="px-4 py-3 font-medium border-r border-gray-200">${esc(g.name)}</td>
         <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.phone || ''}" placeholder="Añadir tel." data-action="edit-phone"></td>
-        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white text-center md:text-left" value="${g.table_number || ''}" placeholder="Por asignar" data-action="edit-table"></td>
-        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-gray-600 border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.group_tag || ''}" placeholder="Añadir cat." data-action="edit-group"></td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white text-center" value="${g.table_number || ''}" placeholder="Mesa" data-action="edit-table"></td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.group_tag || ''}" placeholder="Añadir cat." data-action="edit-group"></td>
         <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-emerald-800 border border-transparent hover:border-emerald-200 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-emerald-50/20 focus:bg-white" value="${g.family_group || ''}" placeholder="Por asignar" data-action="edit-family"></td>
         <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.invitation_sent ? 'bg-blue-500 border-blue-600' : 'border-gray-300 hover:border-blue-400'}" data-action="toggle-sent"><i data-lucide="mail" style="width:14px;height:14px;color:${g.invitation_sent ? '#fff' : '#9ca3af'}"></i></button></td>
         <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.attendance === 'confirmado' ? 'bg-emerald-500 border-emerald-600' : 'border-gray-300 hover:border-emerald-400'}" data-action="confirm"><i data-lucide="check" style="width:14px;height:14px;color:${g.attendance === 'confirmado' ? '#fff' : '#9ca3af'}"></i></button></td>
@@ -275,7 +219,7 @@ function updateRow(tr, g) {
     tr.querySelector('[data-action="confirm"]').onclick = () => setStatus(g, 'confirmado');
     tr.querySelector('[data-action="decline"]').onclick = () => setStatus(g, 'no_asiste');
     tr.querySelector('[data-action="delete"]').onclick = (e) => deleteGuest(g, e.currentTarget);
-    
+
     const phoneInput = tr.querySelector('[data-action="edit-phone"]');
     phoneInput.onblur = () => saveField(g, 'phone', phoneInput.value.trim());
     phoneInput.onkeydown = (e) => { if (e.key === 'Enter') phoneInput.blur(); };
@@ -295,17 +239,14 @@ function updateRow(tr, g) {
     lucide.createIcons();
 }
 
-function esc(s) {
-    const d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-}
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
 async function toggleSent(g) { await window.dataSdk.update({ ...g, invitation_sent: !g.invitation_sent }); }
-async function saveField(g, field, value) { 
+
+async function saveField(g, field, value) {
     const finalVal = value === '' ? null : value;
-    if (g[field] === finalVal) return; 
-    await window.dataSdk.update({ ...g, [field]: finalVal }); 
+    if (g[field] === finalVal) return;
+    await window.dataSdk.update({ ...g, [field]: finalVal });
 }
 
 async function saveTable(g, newTable) {
@@ -313,27 +254,35 @@ async function saveTable(g, newTable) {
     if (g.table_number === finalTable) return;
     if (g.family_group && g.family_group.trim() !== '') {
         const familyMembers = guests.filter(item => item.family_group === g.family_group);
-        for (const member of familyMembers) { await window.dataSdk.update({ ...member, table_number: finalTable }); }
+        for (const member of familyMembers) {
+            await window.dataSdk.update({ ...member, table_number: finalTable });
+        }
     } else {
         await window.dataSdk.update({ ...g, table_number: finalTable });
     }
 }
 
-async function saveFamily(g, newFamily) { 
+async function saveFamily(g, newFamily) {
     const finalFamily = newFamily === '' ? null : newFamily;
-    if (g.family_group === finalFamily) return; 
-    await window.dataSdk.update({ ...g, family_group: finalFamily }); 
+    if (g.family_group === finalFamily) return;
+    await window.dataSdk.update({ ...g, family_group: finalFamily });
 }
 
-async function setStatus(g, status) { const newStatus = g.attendance === status ? 'pendiente' : status; await window.dataSdk.update({ ...g, attendance: newStatus }); }
-async function deleteGuest(g, btn) { btn.disabled = true; await window.dataSdk.delete(g); }
+async function setStatus(g, status) {
+    const newStatus = g.attendance === status ? 'pendiente' : status;
+    await window.dataSdk.update({ ...g, attendance: newStatus });
+}
+
+async function deleteGuest(g, btn) {
+    btn.disabled = true;
+    await window.dataSdk.delete(g);
+}
 
 function updateStats() {
     const total = guests.length;
     const sent = guests.filter(g => g.invitation_sent).length;
     const confirmed = guests.filter(g => g.attendance === 'confirmado').length;
     const declined = guests.filter(g => g.attendance === 'no_asiste').length;
-    
     document.getElementById('stat-total').textContent = `Total: ${total}`;
     document.getElementById('stat-sent').textContent = `Enviadas: ${sent}`;
     document.getElementById('stat-confirmed').textContent = `Confirmados: ${confirmed}`;
@@ -346,14 +295,14 @@ function renderTablesSummary() {
     const activeGuests = guests.filter(g => g.attendance !== 'no_asiste');
     const tablesMap = {};
     const noTableGuests = [];
-
     activeGuests.forEach(g => {
         if (g.table_number && g.table_number.trim() !== '') {
             if (!tablesMap[g.table_number]) tablesMap[g.table_number] = [];
             tablesMap[g.table_number].push(g);
-        } else { noTableGuests.push(g); }
+        } else {
+            noTableGuests.push(g);
+        }
     });
-
     const sortedTables = Object.keys(tablesMap).sort((a, b) => isNaN(a) || isNaN(b) ? a.localeCompare(b) : Number(a) - Number(b));
 
     if (noTableGuests.length > 0) {
@@ -371,7 +320,9 @@ function renderTablesSummary() {
         tablesContainer.appendChild(card);
     });
 
-    if (activeGuests.length === 0) { tablesContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 italic py-4">No hay asientos distribuidos todavía.</div>'; }
+    if (activeGuests.length === 0) {
+        tablesContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 italic py-4">No hay asientos distribuidos todavía.</div>';
+    }
     lucide.createIcons();
 }
 
@@ -388,6 +339,10 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (guests.length >= 999) {
+        limitWarning.classList.remove('hidden');
+        return;
+    }
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
 
@@ -395,8 +350,8 @@ form.addEventListener('submit', async (e) => {
     const tableVal = document.getElementById('input-table').value.trim();
     const groupVal = document.getElementById('input-group').value.trim();
     const familyVal = document.getElementById('input-family').value.trim();
-    
-    await window.dataSdk.create({
+
+    const result = await window.dataSdk.create({
         name: document.getElementById('input-name').value.trim(),
         attendance: 'pendiente',
         phone: phoneVal === '' ? null : phoneVal,
@@ -405,14 +360,18 @@ form.addEventListener('submit', async (e) => {
         family_group: familyVal === '' ? null : familyVal,
         invitation_sent: document.getElementById('input-sent').checked
     });
-
     btn.disabled = false;
-    form.reset();
+    if (result.isOk) form.reset();
 });
 
-const handler = { onDataChanged(data) { guests = data; renderGuests(); } };
+const handler = {
+    onDataChanged(data) {
+        guests = data;
+        renderGuests();
+    }
+};
 window.dataSdk.init(handler);
 lucide.createIcons();
 </script>
-</body>
-</html>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a15045aa46acb189',t:'MTc4MzAyMjc5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
