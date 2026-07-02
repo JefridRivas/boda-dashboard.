@@ -1,43 +1,426 @@
-Lista de Invitados - Boda body { font-family: 'Alegreya Sans', sans-serif; } h1, h2 { font-family: 'Alegreya', serif; } 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Invitados - Boda</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-Lista de Invitados
+    <style>
+        body { font-family: 'Alegreya Sans', sans-serif; }
+        h1, h2 { font-family: 'Alegreya', serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-6">
 
-Organiza a tus invitados de boda
+<div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-8">
+    <h1 class="text-4xl font-bold text-center text-gray-900 mb-2">Lista de Invitados</h1>
+    <p class="text-center text-gray-500 mb-8 italic">Organiza a tus invitados de boda</p>
 
-Nombre 
+    <form id="add-form" class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200 items-end">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <input type="text" id="input-name" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono (con código)</label>
+            <input type="text" id="input-phone" placeholder="Ej: 13051234567" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Mesa</label>
+            <input type="text" id="input-table" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Categoría / Relación</label>
+            <input type="text" id="input-group" placeholder="Ej: Amigos, Trabajo" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ID Familia / Pareja</label>
+            <input type="text" id="input-family" placeholder="Por asignar" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+        <div class="flex items-center h-10 gap-2 pl-2">
+            <input type="checkbox" id="input-sent" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+            <label for="input-sent" class="text-sm font-medium text-gray-700 select-none">¿Enviada?</label>
+        </div>
+        <div>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
+                <i data-lucide="plus" style="width:18px; height:18px"></i> Agregar
+            </button>
+        </div>
+    </form>
 
-Teléfono (con código) 
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+        <div class="relative flex-1 max-w-md">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                <i data-lucide="search" style="width:18px;height:18px"></i>
+            </span>
+            <input type="text" id="search-bar" placeholder="Buscar por nombre, teléfono o familia..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white text-sm">
+        </div>
+        <div class="flex flex-wrap gap-2 items-center text-xs">
+            <span class="font-semibold text-gray-600 mr-1">Filtrar por:</span>
+            <button data-filter="all" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white font-medium shadow-sm transition-all">Todos</button>
+            <button data-filter="not-sent" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Enviar</button>
+            <button data-filter="pending" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Pendientes RSVP</button>
+            <button data-filter="confirmed" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Confirmados</button>
+            <button data-filter="no-table" class="px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all">Sin Mesa</button>
+        </div>
+    </div>
 
-Mesa 
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 text-center text-sm font-medium">
+        <div id="stat-total" class="bg-gray-100 p-3 rounded-lg text-gray-700 border border-gray-200">Total: 0</div>
+        <div id="stat-sent" class="bg-blue-50 p-3 rounded-lg text-blue-700 border border-blue-200">Enviadas: 0</div>
+        <div id="stat-confirmed" class="bg-emerald-50 p-3 rounded-lg text-emerald-700 border border-emerald-200">Confirmados: 0</div>
+        <div id="stat-declined" class="bg-red-50 p-3 rounded-lg text-red-700 border border-red-200">No asisten: 0</div>
+        <div id="stat-pending" class="bg-amber-50 p-3 rounded-lg text-amber-700 border border-amber-200">Pendientes: 0</div>
+    </div>
 
-Categoría / Relación 
+    <div class="overflow-x-auto border border-gray-200 rounded-lg">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 font-semibold text-sm">
+                    <th class="px-4 py-3 border-r border-gray-200">Nombre</th>
+                    <th class="px-4 py-3 border-r border-gray-200 w-48">Teléfono</th>
+                    <th class="px-4 py-3 border-r border-gray-200 w-28">Mesa</th>
+                    <th class="px-4 py-3 border-r border-gray-200 w-40">Categoría</th>
+                    <th class="px-4 py-3 border-r border-gray-200 w-44">Familia / Pareja</th>
+                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Enviada</th>
+                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">Asiste</th>
+                    <th class="px-4 py-3 text-center border-r border-gray-200 w-24">No Asiste</th>
+                    <th class="px-4 py-3 w-16 text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="guest-list" class="text-sm divide-y divide-gray-200">
+                </tbody>
+        </table>
+    </div>
 
-ID Familia / Pareja 
+    <div id="empty-msg" class="text-center py-12 text-gray-400 italic">
+        Aún no hay invitados. ¡Agrega el primero!
+    </div>
 
-¿Enviada? 
+    <div id="filter-empty-msg" class="hidden text-center py-12 text-gray-400 italic">
+        No se encontraron invitados con los filtros actuales.
+    </div>
+</div>
 
-Agregar 
+<div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+        <i data-lucide="armchair" class="text-emerald-600" style="width:24px;height:24px"></i> Distribución de Mesas
+    </h2>
+    <p class="text-sm text-gray-500 mb-6">Visualiza cómo van quedando conformados los espacios de tu recepción.</p>
+    
+    <div id="tables-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        </div>
+</div>
 
-Filtrar por: Todos Sin Enviar Pendientes RSVP Confirmados Sin Mesa 
+<script>
+// ==========================================
+// CONFIGURACIÓN DE TU BASE DE DATOS REAL (YA CONECTADA)
+// ==========================================
+const SUPABASE_URL = "https://zvactbtumzbjhnszlnto.supabase.co"; 
+const SUPABASE_KEY = "sb_publishable_yXjsxKn-LpTSanuJmHAkOA_zvqmxXiB";
 
-Total: 0
+// Inicialización de Supabase
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-Enviadas: 0
+window.dataSdk = {
+    _handler: null,
+    init(handler) {
+        this._handler = handler;
+        this.fetchAndListen();
+    },
+    async fetchAndListen() {
+        const { data, error } = await _supabase.from('guests').select('*').order('created_at', { ascending: true });
+        if (!error && data) {
+            const mapped = data.map(g => ({ ...g, __backendId: g.id }));
+            if (this._handler) this._handler.onDataChanged(mapped);
+        }
 
-Confirmados: 0
+        _supabase.channel('custom-all-channel')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'guests' }, () => {
+            this.refresh();
+        })
+        .subscribe();
+    },
+    async refresh() {
+        const { data } = await _supabase.from('guests').select('*').order('created_at', { ascending: true });
+        if (data && this._handler) {
+            const mapped = data.map(g => ({ ...g, __backendId: g.id }));
+            this._handler.onDataChanged(mapped);
+        }
+    },
+    async create(guest) {
+        const { error } = await _supabase.from('guests').insert([{
+            name: guest.name,
+            phone: guest.phone,
+            table_number: guest.table_number,
+            group_tag: guest.group_tag,
+            family_group: guest.family_group,
+            invitation_sent: guest.invitation_sent,
+            attendance: guest.attendance
+        }]);
+        return { isOk: !error };
+    },
+    async update(updatedGuest) {
+        const { error } = await _supabase.from('guests').update({
+            name: updatedGuest.name,
+            phone: updatedGuest.phone,
+            table_number: updatedGuest.table_number,
+            group_tag: updatedGuest.group_tag,
+            family_group: updatedGuest.family_group,
+            invitation_sent: updatedGuest.invitation_sent,
+            attendance: updatedGuest.attendance
+        }).eq('id', updatedGuest.__backendId);
+        return { isOk: !error };
+    },
+    async delete(guest) {
+        const { error } = await _supabase.from('guests').delete().eq('id', guest.__backendId);
+        return { isOk: !error };
+    }
+};
 
-No asisten: 0
+let guests = [];
+let currentFilter = 'all';
+let searchQuery = '';
 
-Pendientes: 0
+const guestList = document.getElementById('guest-list');
+const emptyMsg = document.getElementById('empty-msg');
+const filterEmptyMsg = document.getElementById('filter-empty-msg');
+const form = document.getElementById('add-form');
+const searchBar = document.getElementById('search-bar');
+const tablesContainer = document.getElementById('tables-container');
 
-NombreTeléfonoMesaCategoríaFamilia / ParejaEnviadaAsisteNo AsisteEliminar 
+function getFilteredGuests() {
+    return guests.filter(g => {
+        const matchSearch = 
+            g.name.toLowerCase().includes(searchQuery) ||
+            (g.phone && g.phone.includes(searchQuery)) ||
+            (g.group_tag && g.group_tag.toLowerCase().includes(searchQuery)) ||
+            (g.family_group && g.family_group.toLowerCase().includes(searchQuery));
+        
+        if (!matchSearch) return false;
 
-Aún no hay invitados. ¡Agrega el primero! 
+        switch (currentFilter) {
+            case 'not-sent': return !g.invitation_sent;
+            case 'pending': return g.attendance === 'pendiente';
+            case 'confirmed': return g.attendance === 'confirmado';
+            case 'no-table': return !g.table_number || g.table_number.trim() === '';
+            default: return true;
+        }
+    });
+}
 
-No se encontraron invitados con los filtros actuales. 
+function renderGuests() {
+    const filtered = getFilteredGuests();
+    const existing = new Map([...guestList.children].map(r => [r.dataset.id, r]));
+    const ids = new Set(filtered.map(g => g.__backendId));
+    
+    existing.forEach((el, id) => {
+        if (!ids.has(id)) el.remove();
+    });
 
-Distribución de Mesas 
+    filtered.forEach(g => {
+        if (existing.has(g.__backendId)) {
+            updateRow(existing.get(g.__backendId), g);
+        } else {
+            guestList.appendChild(createRow(g));
+        }
+    });
 
-Visualiza cómo van quedando conformados los espacios de tu recepción.
+    emptyMsg.classList.toggle('hidden', guests.length > 0);
+    if (guests.length > 0) {
+        filterEmptyMsg.classList.toggle('hidden', filtered.length > 0);
+    } else {
+        filterEmptyMsg.classList.add('hidden');
+    }
 
-// ========================================== // CONFIGURACIÓN DE TU BASE DE DATOS REAL (YA CONECTADA) // ========================================== const SUPABASE_URL = "https://zvactbtumzbjhnszlnto.supabase.co"; const SUPABASE_KEY = "sb_publishable_yXjsxKn-LpTSanuJmHAkOA_zvqmxXiB"; // Inicialización de Supabase const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); window.dataSdk = { _handler: null, init(handler) { this._handler = handler; this.fetchAndListen(); }, async fetchAndListen() { const { data, error } = await _supabase.from('guests').select('*').order('created_at', { ascending: true }); if (!error && data) { const mapped = data.map(g => ({ ...g, __backendId: g.id })); if (this._handler) this._handler.onDataChanged(mapped); } _supabase.channel('custom-all-channel') .on('postgres_changes', { event: '*', schema: 'public', table: 'guests' }, () => { this.refresh(); }) .subscribe(); }, async refresh() { const { data } = await _supabase.from('guests').select('*').order('created_at', { ascending: true }); if (data && this._handler) { const mapped = data.map(g => ({ ...g, __backendId: g.id })); this._handler.onDataChanged(mapped); } }, async create(guest) { const { error } = await _supabase.from('guests').insert([{ name: guest.name, phone: guest.phone, table_number: guest.table_number, group_tag: guest.group_tag, family_group: guest.family_group, invitation_sent: guest.invitation_sent, attendance: guest.attendance }]); return { isOk: !error }; }, async update(updatedGuest) { const { error } = await _supabase.from('guests').update({ name: updatedGuest.name, phone: updatedGuest.phone, table_number: updatedGuest.table_number, group_tag: updatedGuest.group_tag, family_group: updatedGuest.family_group, invitation_sent: updatedGuest.invitation_sent, attendance: updatedGuest.attendance }).eq('id', updatedGuest.__backendId); return { isOk: !error }; }, async delete(guest) { const { error } = await _supabase.from('guests').delete().eq('id', guest.__backendId); return { isOk: !error }; } }; let guests = []; let currentFilter = 'all'; let searchQuery = ''; const guestList = document.getElementById('guest-list'); const emptyMsg = document.getElementById('empty-msg'); const filterEmptyMsg = document.getElementById('filter-empty-msg'); const form = document.getElementById('add-form'); const searchBar = document.getElementById('search-bar'); const tablesContainer = document.getElementById('tables-container'); function getFilteredGuests() { return guests.filter(g => { const matchSearch = g.name.toLowerCase().includes(searchQuery) || (g.phone && g.phone.includes(searchQuery)) || (g.group_tag && g.group_tag.toLowerCase().includes(searchQuery)) || (g.family_group && g.family_group.toLowerCase().includes(searchQuery)); if (!matchSearch) return false; switch (currentFilter) { case 'not-sent': return !g.invitation_sent; case 'pending': return g.attendance === 'pendiente'; case 'confirmed': return g.attendance === 'confirmado'; case 'no-table': return !g.table_number || g.table_number.trim() === ''; default: return true; } }); } function renderGuests() { const filtered = getFilteredGuests(); const existing = new Map([...guestList.children].map(r => [r.dataset.id, r])); const ids = new Set(filtered.map(g => g.__backendId)); existing.forEach((el, id) => { if (!ids.has(id)) el.remove(); }); filtered.forEach(g => { if (existing.has(g.__backendId)) { updateRow(existing.get(g.__backendId), g); } else { guestList.appendChild(createRow(g)); } }); emptyMsg.classList.toggle('hidden', guests.length > 0); if (guests.length > 0) { filterEmptyMsg.classList.toggle('hidden', filtered.length > 0); } else { filterEmptyMsg.classList.add('hidden'); } updateStats(); renderTablesSummary(); } function createRow(g) { const tr = document.createElement('tr'); tr.className = 'border-b hover:bg-gray-50/50 transition-colors'; tr.dataset.id = g.__backendId; updateRow(tr, g); return tr; } function updateRow(tr, g) { let rawPhone = g.phone ? g.phone.replace(/\D/g, '') : ''; const messageTemplate = `¡Guarden la fecha! 🤍✨ El amor nos ha traído hasta aquí, y no imaginamos el día más feliz de nuestras vidas sin ustedes. Nos emociona muchísimo contarles que: ¡Nos casamos! 💍 Queremos que nos acompañen a celebrar el inicio de nuestra mayor aventura ✨ Vayan reservando el día en sus calendarios y compartiendo nuestra alegría. 🥳🎉🎊🎉🥳 Muy pronto les enviaremos las invitaciones oficiales con todos los detalles, pero mientras tanto...! Nos encantaría que nos regalen una pre-confirmación haciendo clic en el siguiente enlace: https://bodahillaryyjefrid.org/ ¡Con todo nuestro cariño, Hillary & Jefrid !`; const waText = encodeURIComponent(messageTemplate); const waLink = `https://wa.me/${rawPhone}?text=${waText}`; const needsTableAlert = (g.attendance === 'confirmado' && (!g.table_number || g.table_number.trim() === '')); tr.className = `border-b transition-colors ${needsTableAlert ? 'bg-amber-50/70 hover:bg-amber-100/60' : 'hover:bg-gray-50/50'}`; tr.innerHTML = ` <td class="px-4 py-3 font-medium border-r border-gray-200">${esc(g.name)} ${needsTableAlert ? '<span class="ml-2 inline-block px-1.5 py-0.5 text-[10px] font-bold bg-amber-200 text-amber-800 rounded">Falta Mesa</span>' : ''}</td> <td class="px-4 py-3 text-gray-600 border-r border-gray-200"> <div class="flex items-center gap-1.5 w-full"> <input type="text" class="flex-1 min-w-0 px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.phone || ''}" placeholder="Añadir tel." data-action="edit-phone"> ${g.phone ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" class="text-emerald-500 hover:text-emerald-600 transition-colors cursor-pointer p-1 flex-shrink-0"><i data-lucide="message-square" style="width:14px;height:14px"></i></a>` : ''} </div> </td> <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white text-center md:text-left" value="${g.table_number || ''}" placeholder="Por asignar" data-action="edit-table"></td> <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-gray-600 border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.group_tag || ''}" placeholder="Añadir cat." data-action="edit-group"></td> <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-emerald-800 border border-transparent hover:border-emerald-200 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-emerald-50/20 focus:bg-white" value="${g.family_group || ''}" placeholder="Por asignar" data-action="edit-family"></td> <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.invitation_sent ? 'bg-blue-500 border-blue-600' : 'border-gray-300 hover:border-blue-400'}" data-action="toggle-sent"><i data-lucide="mail" style="width:14px;height:14px;color:${g.invitation_sent ? '#fff' : '#9ca3af'}"></i></button></td> <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.attendance === 'confirmado' ? 'bg-emerald-500 border-emerald-600' : 'border-gray-300 hover:border-emerald-400'}" data-action="confirm"><i data-lucide="check" style="width:14px;height:14px;color:${g.attendance === 'confirmado' ? '#fff' : '#9ca3af'}"></i></button></td> <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.attendance === 'no_asiste' ? 'bg-red-500 border-red-600' : 'border-gray-300 hover:border-red-400'}" data-action="decline"><i data-lucide="x" style="width:14px;height:14px;color:${g.attendance === 'no_asiste' ? '#fff' : '#9ca3af'}"></i></button></td> <td class="px-4 py-3 text-center"><button data-action="delete" class="text-gray-400 hover:text-red-500 transition-colors"><i data-lucide="trash-2" style="width:16px;height:16px"></i></button></td> `; tr.querySelector('[data-action="toggle-sent"]').onclick = () => toggleSent(g); tr.querySelector('[data-action="confirm"]').onclick = () => setStatus(g, 'confirmado'); tr.querySelector('[data-action="decline"]').onclick = () => setStatus(g, 'no_asiste'); tr.querySelector('[data-action="delete"]').onclick = (e) => deleteGuest(g, e.currentTarget); const phoneInput = tr.querySelector('[data-action="edit-phone"]'); phoneInput.onblur = () => saveField(g, 'phone', phoneInput.value.trim()); phoneInput.onkeydown = (e) => { if (e.key === 'Enter') phoneInput.blur(); }; const tableInput = tr.querySelector('[data-action="edit-table"]'); tableInput.onblur = () => saveTable(g, tableInput.value.trim()); tableInput.onkeydown = (e) => { if (e.key === 'Enter') tableInput.blur(); }; const groupInput = tr.querySelector('[data-action="edit-group"]'); groupInput.onblur = () => saveField(g, 'group_tag', groupInput.value.trim()); groupInput.onkeydown = (e) => { if (e.key === 'Enter') groupInput.blur(); }; const familyInput = tr.querySelector('[data-action="edit-family"]'); familyInput.onblur = () => saveFamily(g, familyInput.value.trim()); familyInput.onkeydown = (e) => { if (e.key === 'Enter') familyInput.blur(); }; lucide.createIcons(); } function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; } async function toggleSent(g) { await window.dataSdk.update({ ...g, invitation_sent: !g.invitation_sent }); } async function saveField(g, field, value) { if (g[field] === value) return; await window.dataSdk.update({ ...g, [field]: value }); } async function saveTable(g, newTable) { if (g.table_number === newTable) return; if (g.family_group && g.family_group.trim() !== '') { const familyMembers = guests.filter(item => item.family_group === g.family_group); for (const member of familyMembers) { await window.dataSdk.update({ ...member, table_number: newTable }); } } else { await window.dataSdk.update({ ...g, table_number: newTable }); } } async function saveFamily(g, newFamily) { if (g.family_group === newFamily) return; await window.dataSdk.update({ ...g, family_group: newFamily }); } async function setStatus(g, status) { const newStatus = g.attendance === status ? 'pendiente' : status; await window.dataSdk.update({ ...g, attendance: newStatus }); } async function deleteGuest(g, btn) { btn.disabled = true; await window.dataSdk.delete(g); } function updateStats() { const total = guests.length; const sent = guests.filter(g => g.invitation_sent).length; const confirmed = guests.filter(g => g.attendance === 'confirmado').length; const declined = guests.filter(g => g.attendance === 'no_asiste').length; document.getElementById('stat-total').textContent = `Total: ${total}`; document.getElementById('stat-sent').textContent = `Enviadas: ${sent}`; document.getElementById('stat-confirmed').textContent = `Confirmados: ${confirmed}`; document.getElementById('stat-declined').textContent = `No asisten: ${declined}`; document.getElementById('stat-pending').textContent = `Pendientes: ${total - confirmed - declined}`; } function renderTablesSummary() { tablesContainer.innerHTML = ''; const activeGuests = guests.filter(g => g.attendance !== 'no_asiste'); const tablesMap = {}; const noTableGuests = []; activeGuests.forEach(g => { if (g.table_number && g.table_number.trim() !== '') { if (!tablesMap[g.table_number]) tablesMap[g.table_number] = []; tablesMap[g.table_number].push(g); } else { noTableGuests.push(g); } }); const sortedTables = Object.keys(tablesMap).sort((a, b) => isNaN(a) || isNaN(b) ? a.localeCompare(b) : Number(a) - Number(b)); if (noTableGuests.length > 0) { const card = document.createElement('div'); card.className = "bg-amber-50 p-4 rounded-lg border border-amber-200 shadow-sm"; card.innerHTML = `<div class="flex justify-between items-center border-b border-amber-200 pb-2 mb-3"><span class="font-bold text-amber-900 flex items-center gap-1.5"><i data-lucide="help-circle" style="width:16px;height:16px"></i> Por Asignar Mesa</span><span class="bg-amber-200 text-amber-900 text-xs px-2 py-0.5 rounded-full font-bold">${noTableGuests.length} pers.</span></div><ul class="space-y-1 text-xs text-amber-900 font-medium">${noTableGuests.map(m => `<li>• ${esc(m.name)} <span class="text-[10px] text-amber-700 italic">(${m.attendance})</span></li>`).join('')}</ul>`; tablesContainer.appendChild(card); } sortedTables.forEach(tableName => { const tableMembers = tablesMap[tableName]; const card = document.createElement('div'); card.className = "bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm"; card.innerHTML = `<div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-3"><span class="font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="table-properties" style="width:16px;height:16px" class="text-emerald-600"></i> Mesa ${esc(tableName)}</span><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">${tableMembers.length} pers.</span></div><ul class="space-y-1 text-xs text-gray-600">${tableMembers.map(m => `<li>• ${esc(m.name)} <span class="text-[10px] ${m.attendance === 'confirmado' ? 'text-emerald-600 font-semibold' : 'text-amber-600 italic'}">(${m.attendance})</span></li>`).join('')}</ul>`; tablesContainer.appendChild(card); }); if (activeGuests.length === 0) { tablesContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 italic py-4">No hay asientos distribuidos todavía.</div>'; } lucide.createIcons(); } searchBar.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase().trim(); renderGuests(); }); document.querySelectorAll('[data-filter]').forEach(btn => { btn.onclick = () => { document.querySelectorAll('[data-filter]').forEach(b => { b.className = "px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all"; }); btn.className = "px-3 py-1.5 rounded-full bg-emerald-600 text-white font-medium shadow-sm transition-all"; currentFilter = btn.dataset.filter; renderGuests(); }; }); form.addEventListener('submit', async (e) => { e.preventDefault(); const btn = form.querySelector('button[type="submit"]'); btn.disabled = true; await window.dataSdk.create({ name: document.getElementById('input-name').value.trim(), attendance: 'pendiente', phone: document.getElementById('input-phone').value.trim(), table_number: document.getElementById('input-table').value.trim(), group_tag: document.getElementById('input-group').value.trim(), family_group: document.getElementById('input-family').value.trim(), invitation_sent: document.getElementById('input-sent').checked }); btn.disabled = false; form.reset(); }); const handler = { onDataChanged(data) { guests = data; renderGuests(); } }; window.dataSdk.init(handler); lucide.createIcons(); 
+    updateStats();
+    renderTablesSummary();
+}
+
+function createRow(g) {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b hover:bg-gray-50/50 transition-colors';
+    tr.dataset.id = g.__backendId;
+    updateRow(tr, g);
+    return tr;
+}
+
+function updateRow(tr, g) {
+    let rawPhone = g.phone ? g.phone.replace(/\D/g, '') : '';
+    
+    const messageTemplate = `¡Guarden la fecha! 🤍✨
+
+El amor nos ha traído hasta aquí, y no imaginamos el día más feliz de nuestras vidas sin ustedes. Nos emociona muchísimo contarles que:
+
+¡Nos casamos! 💍
+
+Queremos que nos acompañen a celebrar el inicio de nuestra mayor aventura ✨
+Vayan reservando el día en sus calendarios y compartiendo nuestra alegría.
+🥳🎉🎊🎉🥳
+Muy pronto les enviaremos las invitaciones oficiales con todos los detalles, pero mientras tanto...!
+
+Nos encantaría que nos regalen una pre-confirmación haciendo clic en el siguiente enlace:
+
+https://bodahillaryyjefrid.org/
+
+¡Con todo nuestro cariño, Hillary & Jefrid !`;
+
+    const waText = encodeURIComponent(messageTemplate);
+    const waLink = `https://wa.me/${rawPhone}?text=${waText}`;
+
+    const needsTableAlert = (g.attendance === 'confirmado' && (!g.table_number || g.table_number.trim() === ''));
+    tr.className = `border-b transition-colors ${needsTableAlert ? 'bg-amber-50/70 hover:bg-amber-100/60' : 'hover:bg-gray-50/50'}`;
+
+    tr.innerHTML = `
+        <td class="px-4 py-3 font-medium border-r border-gray-200">${esc(g.name)} ${needsTableAlert ? '<span class="ml-2 inline-block px-1.5 py-0.5 text-[10px] font-bold bg-amber-200 text-amber-800 rounded">Falta Mesa</span>' : ''}</td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200">
+            <div class="flex items-center gap-1.5 w-full">
+                <input type="text" class="flex-1 min-w-0 px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.phone || ''}" placeholder="Añadir tel." data-action="edit-phone">
+                ${g.phone ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" class="text-emerald-500 hover:text-emerald-600 transition-colors cursor-pointer p-1 flex-shrink-0"><i data-lucide="message-square" style="width:14px;height:14px"></i></a>` : ''}
+            </div>
+        </td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white text-center md:text-left" value="${g.table_number || ''}" placeholder="Por asignar" data-action="edit-table"></td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-gray-600 border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.group_tag || ''}" placeholder="Añadir cat." data-action="edit-group"></td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-emerald-800 border border-transparent hover:border-emerald-200 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-emerald-50/20 focus:bg-white" value="${g.family_group || ''}" placeholder="Por asignar" data-action="edit-family"></td>
+        <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.invitation_sent ? 'bg-blue-500 border-blue-600' : 'border-gray-300 hover:border-blue-400'}" data-action="toggle-sent"><i data-lucide="mail" style="width:14px;height:14px;color:${g.invitation_sent ? '#fff' : '#9ca3af'}"></i></button></td>
+        <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.attendance === 'confirmado' ? 'bg-emerald-500 border-emerald-600' : 'border-gray-300 hover:border-emerald-400'}" data-action="confirm"><i data-lucide="check" style="width:14px;height:14px;color:${g.attendance === 'confirmado' ? '#fff' : '#9ca3af'}"></i></button></td>
+        <td class="px-4 py-3 text-center border-r border-gray-200"><button class="inline-flex items-center justify-center w-6 h-6 rounded border-2 transition-colors ${g.attendance === 'no_asiste' ? 'bg-red-500 border-red-600' : 'border-gray-300 hover:border-red-400'}" data-action="decline"><i data-lucide="x" style="width:14px;height:14px;color:${g.attendance === 'no_asiste' ? '#fff' : '#9ca3af'}"></i></button></td>
+        <td class="px-4 py-3 text-center"><button data-action="delete" class="text-gray-400 hover:text-red-500 transition-colors"><i data-lucide="trash-2" style="width:16px;height:16px"></i></button></td>
+    `;
+
+    tr.querySelector('[data-action="toggle-sent"]').onclick = () => toggleSent(g);
+    tr.querySelector('[data-action="confirm"]').onclick = () => setStatus(g, 'confirmado');
+    tr.querySelector('[data-action="decline"]').onclick = () => setStatus(g, 'no_asiste');
+    tr.querySelector('[data-action="delete"]').onclick = (e) => deleteGuest(g, e.currentTarget);
+    
+    const phoneInput = tr.querySelector('[data-action="edit-phone"]');
+    phoneInput.onblur = () => saveField(g, 'phone', phoneInput.value.trim());
+    phoneInput.onkeydown = (e) => { if (e.key === 'Enter') phoneInput.blur(); };
+
+    const tableInput = tr.querySelector('[data-action="edit-table"]');
+    tableInput.onblur = () => saveTable(g, tableInput.value.trim());
+    tableInput.onkeydown = (e) => { if (e.key === 'Enter') tableInput.blur(); };
+
+    const groupInput = tr.querySelector('[data-action="edit-group"]');
+    groupInput.onblur = () => saveField(g, 'group_tag', groupInput.value.trim());
+    groupInput.onkeydown = (e) => { if (e.key === 'Enter') groupInput.blur(); };
+
+    const familyInput = tr.querySelector('[data-action="edit-family"]');
+    familyInput.onblur = () => saveFamily(g, familyInput.value.trim());
+    familyInput.onkeydown = (e) => { if (e.key === 'Enter') familyInput.blur(); };
+
+    lucide.createIcons();
+}
+
+function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+async function toggleSent(g) { await window.dataSdk.update({ ...g, invitation_sent: !g.invitation_sent }); }
+async function saveField(g, field, value) { if (g[field] === value) return; await window.dataSdk.update({ ...g, [field]: value }); }
+
+async function saveTable(g, newTable) {
+    if (g.table_number === newTable) return;
+    if (g.family_group && g.family_group.trim() !== '') {
+        const familyMembers = guests.filter(item => item.family_group === g.family_group);
+        for (const member of familyMembers) { await window.dataSdk.update({ ...member, table_number: newTable }); }
+    } else {
+        await window.dataSdk.update({ ...g, table_number: newTable });
+    }
+}
+
+async function saveFamily(g, newFamily) { if (g.family_group === newFamily) return; await window.dataSdk.update({ ...g, family_group: newFamily }); }
+async function setStatus(g, status) { const newStatus = g.attendance === status ? 'pendiente' : status; await window.dataSdk.update({ ...g, attendance: newStatus }); }
+async function deleteGuest(g, btn) { btn.disabled = true; await window.dataSdk.delete(g); }
+
+function updateStats() {
+    const total = guests.length;
+    const sent = guests.filter(g => g.invitation_sent).length;
+    const confirmed = guests.filter(g => g.attendance === 'confirmado').length;
+    const declined = guests.filter(g => g.attendance === 'no_asiste').length;
+    
+    document.getElementById('stat-total').textContent = `Total: ${total}`;
+    document.getElementById('stat-sent').textContent = `Enviadas: ${sent}`;
+    document.getElementById('stat-confirmed').textContent = `Confirmados: ${confirmed}`;
+    document.getElementById('stat-declined').textContent = `No asisten: ${declined}`;
+    document.getElementById('stat-pending').textContent = `Pendientes: ${total - confirmed - declined}`;
+}
+
+function renderTablesSummary() {
+    tablesContainer.innerHTML = '';
+    const activeGuests = guests.filter(g => g.attendance !== 'no_asiste');
+    const tablesMap = {};
+    const noTableGuests = [];
+
+    activeGuests.forEach(g => {
+        if (g.table_number && g.table_number.trim() !== '') {
+            if (!tablesMap[g.table_number]) tablesMap[g.table_number] = [];
+            tablesMap[g.table_number].push(g);
+        } else { noTableGuests.push(g); }
+    });
+
+    const sortedTables = Object.keys(tablesMap).sort((a, b) => isNaN(a) || isNaN(b) ? a.localeCompare(b) : Number(a) - Number(b));
+
+    if (noTableGuests.length > 0) {
+        const card = document.createElement('div');
+        card.className = "bg-amber-50 p-4 rounded-lg border border-amber-200 shadow-sm";
+        card.innerHTML = `<div class="flex justify-between items-center border-b border-amber-200 pb-2 mb-3"><span class="font-bold text-amber-900 flex items-center gap-1.5"><i data-lucide="help-circle" style="width:16px;height:16px"></i> Por Asignar Mesa</span><span class="bg-amber-200 text-amber-900 text-xs px-2 py-0.5 rounded-full font-bold">${noTableGuests.length} pers.</span></div><ul class="space-y-1 text-xs text-amber-900 font-medium">${noTableGuests.map(m => `<li>• ${esc(m.name)} <span class="text-[10px] text-amber-700 italic">(${m.attendance})</span></li>`).join('')}</ul>`;
+        tablesContainer.appendChild(card);
+    }
+
+    sortedTables.forEach(tableName => {
+        const tableMembers = tablesMap[tableName];
+        const card = document.createElement('div');
+        card.className = "bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm";
+        card.innerHTML = `<div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-3"><span class="font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="table-properties" style="width:16px;height:16px" class="text-emerald-600"></i> Mesa ${esc(tableName)}</span><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">${tableMembers.length} pers.</span></div><ul class="space-y-1 text-xs text-gray-600">${tableMembers.map(m => `<li>• ${esc(m.name)} <span class="text-[10px] ${m.attendance === 'confirmado' ? 'text-emerald-600 font-semibold' : 'text-amber-600 italic'}">(${m.attendance})</span></li>`).join('')}</ul>`;
+        tablesContainer.appendChild(card);
+    });
+
+    if (activeGuests.length === 0) { tablesContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 italic py-4">No hay asientos distribuidos todavía.</div>'; }
+    lucide.createIcons();
+}
+
+searchBar.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase().trim(); renderGuests(); });
+
+document.querySelectorAll('[data-filter]').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll('[data-filter]').forEach(b => { b.className = "px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all"; });
+        btn.className = "px-3 py-1.5 rounded-full bg-emerald-600 text-white font-medium shadow-sm transition-all";
+        currentFilter = btn.dataset.filter;
+        renderGuests();
+    };
+});
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    
+    await window.dataSdk.create({
+        name: document.getElementById('input-name').value.trim(),
+        attendance: 'pendiente',
+        phone: document.getElementById('input-phone').value.trim(),
+        table_number: document.getElementById('input-table').value.trim(),
+        group_tag: document.getElementById('input-group').value.trim(),
+        family_group: document.getElementById('input-family').value.trim(),
+        invitation_sent: document.getElementById('input-sent').checked
+    });
+
+    btn.disabled = false;
+    form.reset();
+});
+
+const handler = { onDataChanged(data) { guests = data; renderGuests(); } };
+window.dataSdk.init(handler);
+lucide.createIcons();
+</script>
+</body>
+</html>
