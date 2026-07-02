@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Invitados - Boda</title>
+    <!-- Lucide Icons & Fuentes -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cliente oficial de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -22,14 +24,15 @@
     <h1 class="text-4xl font-bold text-center text-gray-900 mb-2">Lista de Invitados</h1>
     <p class="text-center text-gray-500 mb-8 italic">Organiza a tus invitados de boda</p>
 
+    <!-- Formulario para agregar -->
     <form id="add-form" class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200 items-end">
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
             <input type="text" id="input-name" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
         </div>
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono (con código)</label>
-            <input type="text" id="input-phone" placeholder="Ej: 13051234567" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+            <input type="text" id="input-phone" placeholder="Ej: 3051234567" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Mesa</label>
@@ -54,6 +57,7 @@
         </div>
     </form>
 
+    <!-- Barra de Búsqueda y Filtros Rápidos -->
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
         <div class="relative flex-1 max-w-md">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
@@ -71,6 +75,7 @@
         </div>
     </div>
 
+    <!-- Indicadores / Estadísticas -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 text-center text-sm font-medium">
         <div id="stat-total" class="bg-gray-100 p-3 rounded-lg text-gray-700 border border-gray-200">Total: 0</div>
         <div id="stat-sent" class="bg-blue-50 p-3 rounded-lg text-blue-700 border border-blue-200">Enviadas: 0</div>
@@ -79,6 +84,7 @@
         <div id="stat-pending" class="bg-amber-50 p-3 rounded-lg text-amber-700 border border-amber-200">Pendientes: 0</div>
     </div>
 
+    <!-- Tabla -->
     <div class="overflow-x-auto border border-gray-200 rounded-lg">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -95,7 +101,8 @@
                 </tr>
             </thead>
             <tbody id="guest-list" class="text-sm divide-y divide-gray-200">
-                </tbody>
+                <!-- Se rellena dinámicamente -->
+            </tbody>
         </table>
     </div>
 
@@ -108,6 +115,7 @@
     </div>
 </div>
 
+<!-- MAPA / RESUMEN DE MESAS -->
 <div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
     <h2 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
         <i data-lucide="armchair" class="text-emerald-600" style="width:24px;height:24px"></i> Distribución de Mesas
@@ -115,13 +123,12 @@
     <p class="text-sm text-gray-500 mb-6">Visualiza cómo van quedando conformados los espacios de tu recepción.</p>
     
     <div id="tables-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        </div>
+        <!-- Se rellena dinámicamente -->
+    </div>
 </div>
 
 <script>
-// ==========================================
 // CONFIGURACIÓN DE TU BASE DE DATOS REAL (YA CONECTADA)
-// ==========================================
 const SUPABASE_URL = "https://zvactbtumzbjhnszlnto.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_yXjsxKn-LpTSanuJmHAkOA_zvqmxXiB";
 
@@ -252,39 +259,9 @@ function createRow(g) {
 }
 
 function updateRow(tr, g) {
-    let rawPhone = g.phone ? g.phone.replace(/\D/g, '') : '';
-    
-    const messageTemplate = `¡Guarden la fecha! 🤍✨
-
-El amor nos ha traído hasta aquí, y no imaginamos el día más feliz de nuestras vidas sin ustedes. Nos emociona muchísimo contarles que:
-
-¡Nos casamos! 💍
-
-Queremos que nos acompañen a celebrar el inicio de nuestra mayor aventura ✨
-Vayan reservando el día en sus calendarios y compartiendo nuestra alegría.
-🥳🎉🎊🎉🥳
-Muy pronto les enviaremos las invitaciones oficiales con todos los detalles, pero mientras tanto...!
-
-Nos encantaría que nos regalen una pre-confirmación haciendo clic en el siguiente enlace:
-
-https://bodahillaryyjefrid.org/
-
-¡Con todo nuestro cariño, Hillary & Jefrid !`;
-
-    const waText = encodeURIComponent(messageTemplate);
-    const waLink = `https://wa.me/${rawPhone}?text=${waText}`;
-
-    const needsTableAlert = (g.attendance === 'confirmado' && (!g.table_number || g.table_number.trim() === ''));
-    tr.className = `border-b transition-colors ${needsTableAlert ? 'bg-amber-50/70 hover:bg-amber-100/60' : 'hover:bg-gray-50/50'}`;
-
     tr.innerHTML = `
-        <td class="px-4 py-3 font-medium border-r border-gray-200">${esc(g.name)} ${needsTableAlert ? '<span class="ml-2 inline-block px-1.5 py-0.5 text-[10px] font-bold bg-amber-200 text-amber-800 rounded">Falta Mesa</span>' : ''}</td>
-        <td class="px-4 py-3 text-gray-600 border-r border-gray-200">
-            <div class="flex items-center gap-1.5 w-full">
-                <input type="text" class="flex-1 min-w-0 px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.phone || ''}" placeholder="Añadir tel." data-action="edit-phone">
-                ${g.phone ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" class="text-emerald-500 hover:text-emerald-600 transition-colors cursor-pointer p-1 flex-shrink-0"><i data-lucide="message-square" style="width:14px;height:14px"></i></a>` : ''}
-            </div>
-        </td>
+        <td class="px-4 py-3 font-medium border-r border-gray-200">${esc(g.name)}</td>
+        <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.phone || ''}" placeholder="Añadir tel." data-action="edit-phone"></td>
         <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-sm border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white text-center md:text-left" value="${g.table_number || ''}" placeholder="Por asignar" data-action="edit-table"></td>
         <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-gray-600 border border-transparent hover:border-gray-300 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-transparent focus:bg-white" value="${g.group_tag || ''}" placeholder="Añadir cat." data-action="edit-group"></td>
         <td class="px-4 py-3 text-gray-600 border-r border-gray-200"><input type="text" class="w-full px-2 py-1 text-xs font-medium text-emerald-800 border border-transparent hover:border-emerald-200 focus:border-emerald-500 rounded focus:outline-none transition-colors bg-emerald-50/20 focus:bg-white" value="${g.family_group || ''}" placeholder="Por asignar" data-action="edit-family"></td>
@@ -325,19 +302,29 @@ function esc(s) {
 }
 
 async function toggleSent(g) { await window.dataSdk.update({ ...g, invitation_sent: !g.invitation_sent }); }
-async function saveField(g, field, value) { if (g[field] === value) return; await window.dataSdk.update({ ...g, [field]: value }); }
+async function saveField(g, field, value) { 
+    const finalVal = value === '' ? null : value;
+    if (g[field] === finalVal) return; 
+    await window.dataSdk.update({ ...g, [field]: finalVal }); 
+}
 
 async function saveTable(g, newTable) {
-    if (g.table_number === newTable) return;
+    const finalTable = newTable === '' ? null : newTable;
+    if (g.table_number === finalTable) return;
     if (g.family_group && g.family_group.trim() !== '') {
         const familyMembers = guests.filter(item => item.family_group === g.family_group);
-        for (const member of familyMembers) { await window.dataSdk.update({ ...member, table_number: newTable }); }
+        for (const member of familyMembers) { await window.dataSdk.update({ ...member, table_number: finalTable }); }
     } else {
-        await window.dataSdk.update({ ...g, table_number: newTable });
+        await window.dataSdk.update({ ...g, table_number: finalTable });
     }
 }
 
-async function saveFamily(g, newFamily) { if (g.family_group === newFamily) return; await window.dataSdk.update({ ...g, family_group: newFamily }); }
+async function saveFamily(g, newFamily) { 
+    const finalFamily = newFamily === '' ? null : newFamily;
+    if (g.family_group === finalFamily) return; 
+    await window.dataSdk.update({ ...g, family_group: finalFamily }); 
+}
+
 async function setStatus(g, status) { const newStatus = g.attendance === status ? 'pendiente' : status; await window.dataSdk.update({ ...g, attendance: newStatus }); }
 async function deleteGuest(g, btn) { btn.disabled = true; await window.dataSdk.delete(g); }
 
@@ -403,14 +390,19 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
+
+    const phoneVal = document.getElementById('input-phone').value.trim();
+    const tableVal = document.getElementById('input-table').value.trim();
+    const groupVal = document.getElementById('input-group').value.trim();
+    const familyVal = document.getElementById('input-family').value.trim();
     
     await window.dataSdk.create({
         name: document.getElementById('input-name').value.trim(),
         attendance: 'pendiente',
-        phone: document.getElementById('input-phone').value.trim(),
-        table_number: document.getElementById('input-table').value.trim(),
-        group_tag: document.getElementById('input-group').value.trim(),
-        family_group: document.getElementById('input-family').value.trim(),
+        phone: phoneVal === '' ? null : phoneVal,
+        table_number: tableVal === '' ? null : tableVal,
+        group_tag: groupVal === '' ? null : groupVal,
+        family_group: familyVal === '' ? null : familyVal,
         invitation_sent: document.getElementById('input-sent').checked
     });
 
